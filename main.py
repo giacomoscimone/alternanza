@@ -2,8 +2,8 @@ import predictor as pr
 import sys
 
 
-def main():
-    image = sys.argv[1]
+def main(argv):
+    image = argv[1]
     # 'C:\\Users\\Alternanza\\Downloads\\bici3.jpg'
 
     predicted_class, prediction_confidence = pr.test_image(image, "bici")
@@ -11,4 +11,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[0:])
