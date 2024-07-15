@@ -1,15 +1,33 @@
-from predictor import test_image
+import logging
+from typing import Any
+import cv2
+import numpy as np
+from image_utils import preproces_image
+from predictor import predict
+from io_utils import load_image
 
-from io_utils import load_all_images
 
-
-def test_all_image(folder_class1: str, folder_class2: str, class1: str, class2: str) -> (int, int):
-
-    image = load_all_images(folder_class1, class1) + load_all_images(folder_class2, class2)
+def test_all_image(model: Any, image_path_with_labels: list) -> (int, int):
 
     num_correct_predictions = 0
-    for image_path, true_label in image:
-        predicted_class, confidence_score = test_image(image_path, true_label)
-        if predicted_class == true_label:
+    logging.info("inizio test immagini")
+
+    for image_path, true_label in image_path_with_labels:
+        img = load_image(image_path)
+        img_preprocessed = preproces_image(img)
+        test_result = test_image(model, img_preprocessed, true_label)
+
+        if test_result is True:
             num_correct_predictions += 1
-    return num_correct_predictions, len(image)
+            logging.debug(f"test immagine riuscita file {image_path}")
+    logging.info("fine test immagini")
+
+    return num_correct_predictions, len(image_path_with_labels)
+
+
+def test_image(model: Any, img: np.array, true_label: str) -> bool:
+    logging.info("inizio predizione")
+    prediction, confidence = predict(img, model)
+    logging.info("predizione terminata")
+    return prediction == true_label
+
