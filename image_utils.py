@@ -46,5 +46,7 @@ def show_image(img: np.array, img_title: str) -> None:
 
 
 def grayscale(img: np.array) -> np.array:
+    logging.debug("immagine caricata")
     img_grayscale = img[:, :, 1]
+    logging.debug("immagine convertita in scala di grigi")
     return img_grayscale
