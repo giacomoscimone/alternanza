@@ -43,3 +43,8 @@ def show_image(img: np.array, img_title: str) -> None:
     cv2.imshow(img_title, img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
+
+
+def grayscale(img: np.array) -> np.array:
+    img_grayscale = img[:, :, 1]
+    return img_grayscale
